@@ -17,10 +17,17 @@ class Crud {
         return result
     }
 
-    public async select(id?: number) {
+    public async select(id?: number | string) {
         if (id) {
-            const result = await pool.query('SELECT * FROM ' + this.nombreTabla + ' WHERE ' + this.nombreId + ' = ' + id);
-            return result;
+            if(typeof(id) == "string"){
+                console.log("entro id String");
+                const result = await pool.query('SELECT * FROM ' + this.nombreTabla + ' WHERE ' + this.nombreId + ' = "' + id +'"');
+                return result;
+            }else{
+                const result = await pool.query('SELECT * FROM ' + this.nombreTabla + ' WHERE ' + this.nombreId + ' = ' + id);
+                return result;
+            }
+           
         } else {
             const result = await pool.query('SELECT * FROM ' + this.nombreTabla);
             return result;

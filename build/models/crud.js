@@ -30,8 +30,15 @@ class Crud {
     select(id) {
         return __awaiter(this, void 0, void 0, function* () {
             if (id) {
-                const result = yield database_1.default.query('SELECT * FROM ' + this.nombreTabla + ' WHERE ' + this.nombreId + ' = ' + id);
-                return result;
+                if (typeof (id) == "string") {
+                    console.log("entro id String");
+                    const result = yield database_1.default.query('SELECT * FROM ' + this.nombreTabla + ' WHERE ' + this.nombreId + ' = "' + id + '"');
+                    return result;
+                }
+                else {
+                    const result = yield database_1.default.query('SELECT * FROM ' + this.nombreTabla + ' WHERE ' + this.nombreId + ' = ' + id);
+                    return result;
+                }
             }
             else {
                 const result = yield database_1.default.query('SELECT * FROM ' + this.nombreTabla);

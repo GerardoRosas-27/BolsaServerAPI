@@ -6,3 +6,8 @@ export interface Usuarios {
     contra: string;
     rol?: number;
 }
+export interface Bacantes {
+    id: string;
+    nombre: string;
+    descripcion: string;
+}

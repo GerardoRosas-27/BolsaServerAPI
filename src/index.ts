@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import { usuariosR } from "./routes/usuariosRoutes";
+import { bacantesR } from "./routes/bacantesRoutes";
 
 class Server {
     public app: Application;
@@ -35,8 +36,8 @@ class Server {
 
     }
     routes() {
-
         this.app.use('/', usuariosR.router);
+        this.app.use('/', bacantesR.router);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {
