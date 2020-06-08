@@ -1,20 +1,24 @@
 import pool from "../database";
+import { Usuarios } from "./interfaces";
+import { crud } from "./crud";
 
-export class UsuariosModels {
-    tabla: string = "usuario";
+class UsuariosModels {
+    constructor(){
+        crud.init("usuario", "id");
+    }
     //metodo para seleccionar varios o un solo registro en la tabla usuario de la la base de datos
-    async select(id: string | undefined, correo: string | undefined) {
+    async select(id: number | undefined, correo: string | undefined) {
         if (id) {
-            const result = await pool.query('SELECT * FROM ' + this.tabla + ' WHERE id = ' + id);
+            const result = await crud.select(id);
             console.log(result);
             return result;
         } else {
             if (correo) {
-                const result = await pool.query('SELECT * FROM ' + this.tabla + ' WHERE correo = "' + correo +'"');
+                const result = await crud.selectNombre("correo" , correo);
                 console.log(result);
                 return result;
             } else {
-                const result = await pool.query('SELECT * FROM ' + this.tabla);
+                const result = await crud.select();
                 console.log(result);
                 return result;
             }
@@ -23,9 +27,9 @@ export class UsuariosModels {
     //metodo para insertar registro en la tabla usuario de la base de datos
     async insert(usuario: Usuarios) {
         try {
-            const resultExiste = await pool.query('SELECT * FROM ' + this.tabla + ' WHERE correo = "' + usuario.correo+'"');
+            const resultExiste = await crud.selectNombre("correo", usuario.correo);
             if (resultExiste.length === 0) {
-                const result = await pool.query('INSERT INTO ' + this.tabla + ' set ?', [usuario]);
+                const result = await crud.insert(usuario);
                 console.log(result.insertId);
                 if (result.warningCount === 0) {
                     return result.insertId
@@ -41,7 +45,7 @@ export class UsuariosModels {
     //metodo para actualizar un registro en la tabla usuario de la base de datos
     async update(id: number, usuario: Usuarios) {
         try {
-            const result = await pool.query('UPDATE ' + this.tabla + ' SET ? WHERE id = ?', [usuario, id]);
+            const result = await crud.update(usuario, id);
             console.log(result)
             if (result.affectedRows === 1) {
                 return true;
@@ -56,7 +60,7 @@ export class UsuariosModels {
     //metodo para eliminar un registro en la tabla usuario de la base de datos
     async delete(id: number) {
         try {
-            const result = await pool.query('DELETE FROM ' + this.tabla + ' WHERE id =?', [id]);
+            const result = await crud.delete(id);
             console.log(result);
             if (result.affectedRows === 1) {
                 return true;
@@ -70,14 +74,4 @@ export class UsuariosModels {
     }
 
 }
-
-interface Usuarios {
-    id?: number;
-    nombre: string;
-    descripcion?: string;
-    correo: string;
-    contra: string;
-    rol?: number;
-}
-
-export const usuariosModels = new UsuariosModels(); 
+ export const usuariosModels = new UsuariosModels();

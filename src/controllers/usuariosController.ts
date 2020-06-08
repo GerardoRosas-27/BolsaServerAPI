@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 class UsuariosController {
+    constructor(){
+
+    }
     public async keySecrect(req: Request, res: Response, next: NextFunction) {
         try {
             req.body.keySecrect = "secretkeyBruster123";
@@ -78,7 +81,7 @@ class UsuariosController {
     public async getUsuario(req: Request, res: Response) {
         const { id } = req.params;
         try {
-            const result = await usuariosModels.select(id, undefined);
+            const result = await usuariosModels.select(parseInt(id), undefined);
             console.log(result);
             res.status(200).json(result);
         } catch (error) {
@@ -182,4 +185,4 @@ class UsuariosController {
         }
     }
 }
-export const usuariosController = new UsuariosController(); 
+export const usuariosC = new UsuariosController();

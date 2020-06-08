@@ -12,11 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.usuariosController = void 0;
+exports.usuariosC = void 0;
 const usuariosModels_1 = require("../models/usuariosModels");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 class UsuariosController {
+    constructor() {
+    }
     keySecrect(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -98,7 +100,7 @@ class UsuariosController {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             try {
-                const result = yield usuariosModels_1.usuariosModels.select(id, undefined);
+                const result = yield usuariosModels_1.usuariosModels.select(parseInt(id), undefined);
                 console.log(result);
                 res.status(200).json(result);
             }
@@ -218,4 +220,4 @@ class UsuariosController {
         });
     }
 }
-exports.usuariosController = new UsuariosController();
+exports.usuariosC = new UsuariosController();
